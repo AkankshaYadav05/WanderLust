@@ -1,48 +1,81 @@
 <% layout("/layouts/boilerplate") -%>
 
-<div class="row mt-3 signup offset-4">
-    <h4 class="col-6 offset-2"><b>SignUp on WanderLust</b></h4>
-    <br />
-    <div class="col-10 inner-signup">
-        <form action="/signup" method="POST" class="needs-validation" novalidate>
+<div class="container d-flex justify-content-center align-items-start" style="padding-top: 70px; min-height: 100vh;">
+  <div class="col-md-6 col-lg-4 border rounded-4 shadow-sm p-4 bg-white">
+    <h2 class="mb-4 fw-semibold text-center">Create an Account</h2>
 
-            <div class="mb-3">
-            <lable for="username" class="form-label"> Username</lable>
-            <input 
-                name="username" 
-                id="username"
-                type="text" 
-                class="form-control"
-                required
-            />
+    <!-- Signup Form -->
+    <form action="/signup" method="POST" class="needs-validation" novalidate>
 
-            <div class="valid-feedback">Looks good!</div>
+      <!-- Username -->
+      <div class="mb-3">
+        <label for="username" class="form-label fw-medium">Username</label>
+        <input 
+          type="text" 
+          name="username" 
+          id="username" 
+          class="form-control bg-light rounded-pill border-1 p-2.5" 
+          required
+        />
+      </div>
 
+      <!-- Email -->
+      <div class="mb-3">
+        <label for="email" class="form-label fw-medium">Email</label>
+        <input 
+          type="email" 
+          name="email" 
+          id="email" 
+          class="form-control bg-light rounded-pill border-1 p-2.5" 
+          required
+        />
+      </div>
 
-            <div class="mb-3">
-            <lable for="email" class="form-label"> Email</lable>
-            <input 
-                name="email" 
-                id="email"
-                type="email" 
-                class="form-control"
-                required
-            />
+      <!-- Password -->
+      <div class="position-relative mb-3">
+        <input 
+          type="password" 
+          name="password" 
+          id="password" 
+          placeholder="Password" 
+          class="form-control bg-light rounded-pill border-1 p-2.5 pe-5" 
+          required
+        />
+        <span 
+          class="position-absolute top-50 end-0 translate-middle-y me-4" 
+          onclick="togglePassword()" 
+          style="cursor: pointer;"
+        >
+          <i id="eyeIcon" class="fa-regular fa-eye"></i>
+        </span>
+      </div>
 
+      <!-- Submit Button -->
+      <button class="btn w-100 text-white rounded-pill fw-semibold" style="background-color: #bb7a52;">
+        Sign up
+      </button>
 
-            <div class="mb-3">
-            <lable for="password" class="form-label"> Password </lable>
-            <input 
-                name="password" 
-                id="password"
-                type="password" 
-                class="form-control"
-                required
-            />
-                <br>
-            <button class="btn btn-danger">SignUp</button>
+      <!-- Social Signup Section -->
+      <div class="text-center my-4">
+        <hr class="mb-4">
 
-        </div>
-        </form>
-    </div>
+        <button class="btn w-100 border rounded-pill py-2 d-flex align-items-center justify-content-center gap-2 bg-white shadow-sm">
+          <img 
+            src="/images/Google.webp"
+            alt="Google logo" 
+            width="20" 
+            height="20"
+          />
+          <span class="fw-medium text-dark">Continue with Google</span>
+        </button>
+      </div>
+
+      <!-- Login Link -->
+      <p class="text-center text-muted mt-4">
+        Already have an account? <a href="/login" class="text-decoration-none fw-medium">Log in</a>
+      </p>
+    </form>
+  </div>
 </div>
+
+

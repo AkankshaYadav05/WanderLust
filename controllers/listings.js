@@ -6,6 +6,7 @@ const geoCodingClient = mbxGeocoding({ accessToken: mapToken });
 module.exports.index = async (req,res) =>{
     const allListings = await Listing.find({});
     res.render("./listings/index.ejs", {allListings});
+
 };
 
 
@@ -21,6 +22,7 @@ module.exports.showListing = async (req,res) =>{
         path: "reviews", 
         populate: { 
             path: "author",
+            select: "username avatar",
         },
        })
         .populate("owner");
@@ -45,7 +47,14 @@ module.exports.createListing = async(req,res,next) => {
     
     let url = req.file.path;
     let filename = req.file.filename;
-    const newListing = new Listing(req.body.listing);
+    let listingData = req.body.listing;
+
+    if (typeof listingData.facilities === "string") {
+        listingData.facilities = listingData.facilities.split(",").map(f => f.trim());
+    }
+
+    const newListing = new Listing(listingData);
+
     newListing.owner = req.user._id;
     newListing.image = {url, filename};
 
@@ -75,7 +84,14 @@ module.exports.renderEditForm = async (req,res) => {
 
 module.exports.updateListing = async (req,res) => {
     let  { id } = req.params;    
-    let listing = await Listing.findByIdAndUpdate(id, {...req.body.listing});
+    let updatedData = req.body.listing;
+
+    if (typeof updatedData.facilities === "string") {
+        updatedData.facilities = updatedData.facilities.split(",").map(f => f.trim());
+    }
+
+    let listing = await Listing.findByIdAndUpdate(id, updatedData);
+
 
     if(typeof req.file !== "undefined") {
         let url = req.file.path;
@@ -110,7 +126,7 @@ module.exports.searchByCountry = async (req, res) => {
     country: { $regex: new RegExp(country, 'i') }
   });
 
-  res.render('listings/index', { allListings: listings });
+  res.render('listings/index', { allListings: listings, country });
 };
 
 

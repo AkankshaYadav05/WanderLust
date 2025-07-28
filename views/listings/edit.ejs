@@ -22,6 +22,13 @@
             <textarea name="listing[description]" class="form-control" required><%= listing.description %> </textarea> 
             <div class="invalid-feedback">Please enter a short Description</div>
         </div>
+
+        <div class="mb-3">
+            <label for="facilities" class="form-label">What this place offers (comma separated)</label>
+            <input type="text" name="listing[facilities]" class="form-control" 
+                value="<%= listing.facilities ? listing.facilities.join(', ') : '' %>" required/>
+            <div class="invalid-feedback">Please enter facilities</div>
+        </div>
         
         <div class="mb-3">
             Original Listing image <br />

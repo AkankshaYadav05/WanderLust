@@ -20,11 +20,9 @@ router.route("/")
 //New Route
 router.get("/new", isLoggedIn , listingController.renderNewForm);
 
-//Search
-router.get("/search", wrapAsync(listingController.searchByCountry));
 
-
-
+router.route("/search")
+.get(listingController.searchByCountry); //Search route
 
 router.route("/:id")
 .get(listingController.showListing)      //Show route

@@ -4,6 +4,7 @@ module.exports.listingCreateSchema = Joi.object({
     listing: Joi.object({
         title: Joi.string().required(),
         description: Joi.string().required(),
+        facilities: Joi.string().required(),
         location: Joi.string().required(),
         country: Joi.string().required(),
         price: Joi.number().required().min(0),
@@ -19,6 +20,7 @@ module.exports.listingEditSchema = Joi.object({
     listing: Joi.object({
         title: Joi.string().required(),
         description: Joi.string().required(),
+        facilities: Joi.string().required(),
         location: Joi.string().required(),
         country: Joi.string().required(),
         price: Joi.number().required().min(0),

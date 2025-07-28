@@ -28,6 +28,10 @@ const listingSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "User",
     },
+    facilities: {
+        type: [String],
+        default: [],
+    },
     geometry: {
         type: {
             type: String, 
@@ -43,6 +47,8 @@ const listingSchema = new Schema({
         type: String,
         enum: ['beach', 'room', 'iconic-city', 'mountains', 'castles', 'amazing-pools', 'camping', 'forest', 'arctic', 'domes', 'boats'],
     }
+    
+
 });
 
 // Post mongoose middleware
