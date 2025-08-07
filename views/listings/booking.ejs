@@ -1,0 +1,197 @@
+<% layout("/layouts/boilerplate") %>
+
+   <body>
+
+        <!-- Booking Page -->
+        <div class="row mt-3">
+            <div class="alert alert-success" id="successAlert">
+                🎉 Booking confirmed! Your adventure awaits. Check your email for details.
+            </div>
+
+            <div class="booking-section">
+                <h2 style="margin-bottom: 2rem; color: #333;">Complete Your Booking</h2>
+                
+                <!-- Property Summary -->
+                <div style="display: flex; gap: 2rem; margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 2px solid #f8f9fa;">
+                    <div style="width: 150px; height: 100px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem;">🏖️</div>
+                    <div>
+                        <h3 style="color: #333; margin-bottom: 0.5rem;">Beachfront Paradise</h3>
+                        <p style="color: #666; margin-bottom: 0.5rem;">📍 Cancun, Mexico</p>
+                        <p style="color: #666; margin-bottom: 0.5rem;">⭐ 4.9 (127 reviews)</p>
+                        <p style="color: #fe424d; font-weight: bold; font-size: 1.1rem;">₹2,100 /night</p>
+                    </div>
+                </div>
+
+                <!-- Booking Form -->
+                <form action="/listings/<%= listing._id %>?_method=PUT" method="POST" novalidate class="needs-validation" enctype="multipart/form-data" id="bookingForm">
+                    <div class="booking-form">
+                        <div class="form-group">
+                            <label for="checkin">Check-in Date</label>
+                            <input type="date" id="checkin" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="checkout">Check-out Date</label>
+                            <input type="date" id="checkout" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="guests">Number of Guests</label>
+                            <select id="guests" class="form-control" required>
+                                <option value="">Select guests</option>
+                                <option value="1">1 Guest</option>
+                                <option value="2">2 Guests</option>
+                                <option value="3">3 Guests</option>
+                                <option value="4">4 Guests</option>
+                                <option value="5">5+ Guests</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="purpose">Purpose of Visit</label>
+                            <select id="purpose" class="form-control">
+                                <option value="leisure">Leisure</option>
+                                <option value="business">Business</option>
+                                <option value="family">Family Trip</option>
+                                <option value="romantic">Romantic Getaway</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="requests">Special Requests (Optional)</label>
+                        <textarea id="requests" class="form-control" rows="3" placeholder="Any special requests or requirements..."></textarea>
+                    </div>
+
+                    <!-- Price Breakdown -->
+                    <div class="price-breakdown">
+                        <div class="price-row">
+                            <span>₹2,100 × <span id="nightCount">0</span> nights</span>
+                            <span id="subtotal">₹0</span>
+                        </div>
+                        <div class="price-row">
+                            <span>Service fee</span>
+                            <span id="serviceFee">₹0</span>
+                        </div>
+                        <div class="price-row">
+                            <span>Taxes</span>
+                            <span id="taxes">₹0</span>
+                        </div>
+                        <div class="price-total">
+                            <span>Total</span>
+                            <span id="totalPrice">₹0</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary interactive-btn" style="width: 50%; font-size: 1.1rem; padding: 1rem;">
+                        <span id="bookingBtnText">Confirm and Pay</span>
+                        <span id="bookingLoader" class="loading" style="display: none;"></span>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+
+
+        <script>
+        // Book now functionality
+        function bookNow() {
+            showPage('booking');
+            // Set minimum date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('checkin').min = today;
+            
+            // Auto-focus first input
+            setTimeout(() => {
+                document.getElementById('checkin').focus();
+            }, 100);
+        }
+
+        // Price calculation
+        function calculatePrice() {
+            const checkin = document.getElementById('checkin').value;
+            const checkout = document.getElementById('checkout').value;
+            
+            if (checkin && checkout) {
+                const checkinDate = new Date(checkin);
+                const checkoutDate = new Date(checkout);
+                
+                if (checkoutDate > checkinDate) {
+                    const nights = Math.ceil((checkoutDate - checkinDate) / (1000 * 60 * 60 * 24));
+                    const subtotal = basePrice * nights;
+                    const serviceFee = Math.round(subtotal * 0.1);
+                    const taxes = Math.round(subtotal * 0.12);
+                    const total = subtotal + serviceFee + taxes;
+                    
+                    // Update display
+                    document.getElementById('nightCount').textContent = nights;
+                    document.getElementById('subtotal').textContent = `₹${subtotal.toLocaleString()}`;
+                    document.getElementById('serviceFee').textContent = `₹${serviceFee.toLocaleString()}`;
+                    document.getElementById('taxes').textContent = `₹${taxes.toLocaleString()}`;
+                    document.getElementById('totalPrice').textContent = `₹${total.toLocaleString()}`;
+                } else {
+                    // Reset values if checkout is not after checkin
+                    resetPriceCalculation();
+                }
+            } else {
+                resetPriceCalculation();
+            }
+        }
+
+        function resetPriceCalculation() {
+            document.getElementById('nightCount').textContent = '0';
+            document.getElementById('subtotal').textContent = '₹0';
+            document.getElementById('serviceFee').textContent = '₹0';
+            document.getElementById('taxes').textContent = '₹0';
+            document.getElementById('totalPrice').textContent = '₹0';
+        }
+
+        // Event listeners for date inputs
+        document.getElementById('checkin').addEventListener('change', function() {
+            document.getElementById('checkout').min = this.value;
+            calculatePrice();
+        });
+
+        document.getElementById('checkout').addEventListener('change', calculatePrice);
+
+        // Booking form submission
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show loading state
+            const btnText = document.getElementById('bookingBtnText');
+            const loader = document.getElementById('bookingLoader');
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            
+            btnText.style.display = 'none';
+            loader.style.display = 'inline-block';
+            submitBtn.disabled = true;
+            
+            // Simulate booking process
+            setTimeout(() => {
+                // Reset button
+                btnText.style.display = 'inline';
+                loader.style.display = 'none';
+                submitBtn.disabled = false;
+                
+                // Show success message
+                const alert = document.getElementById('successAlert');
+                alert.style.display = 'block';
+                
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    alert.style.display = 'none';
+                }, 5000);
+                
+                // Reset form
+                e.target.reset();
+                resetPriceCalculation();
+                
+            }, 2000);
+        });
+
+
+        </script>
+    </body>  
+
+   

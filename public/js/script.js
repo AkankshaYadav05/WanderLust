@@ -147,3 +147,16 @@ function togglePassword() {
       eyeIcon.classList.add("fa-eye");
     }
 }
+
+
+//For heart icon
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.wishlist-btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault(); 
+        this.querySelector('i').classList.toggle('fa-solid');
+        this.querySelector('i').classList.toggle('fa-solid');
+        this.querySelector('i').classList.toggle('text-danger'); 
+      });
+    });
+  });

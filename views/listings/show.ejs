@@ -19,8 +19,9 @@
         class="card-img-top show-img" 
         alt="listing-image"
         />
+      </div>
 
-        <div class="card-body ">
+     <div class="show-card-body ">
             <p class="card-text">
                 <i>Owned By:- <%= listing.owner.username %> </i>
                 <br>
@@ -29,13 +30,17 @@
                 <%= listing.location %> <br>
                 <%= listing.country %>
             </p>
-        </div>
-     </div>
+      </div>
 
      <br>
     </div>
 
     
+
+  
+
+    
+
     <% if(currUser && listing.owner._id.equals(currUser._id)) { %>
     <div class="btns" >
         <a href="/listings/<%= listing.id %>/edit" 
@@ -51,6 +56,15 @@
     
     <% } %>
 
+    <br>
+    <div class="price-booking col-3 offset-7">
+    <div class="price-display">₹2,100
+      <span class="per-night">/night</span>
+    </div>
+    <a href="/listings/<%= listing.id %>/booking" class="reserve-btn">
+      Reserve Now
+    </a>
+  </div>
 
     <div class="section about-section offset-1 col-9">
       <h3>About this place</h3>

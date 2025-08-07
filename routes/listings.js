@@ -21,6 +21,9 @@ router.route("/")
 router.get("/new", isLoggedIn , listingController.renderNewForm);
 
 
+
+
+
 router.route("/search")
 .get(listingController.searchByCountry); //Search route
 
@@ -32,6 +35,20 @@ router.route("/:id")
 
 //Edit route
 router.get("/:id/edit", isLoggedIn, isOwner, wrapAsync(listingController.renderEditForm));
+
+
+//Booking Route
+router.get('/:id/booking', isLoggedIn, wrapAsync(listingController.renderBookingForm));
+
+// router.post('/booking', (req, res) => {
+//   const { checkin, checkout, guests } = req.body;
+//   console.log('Booking received:', { checkin, checkout, guests });
+//   res.send('Booking confirmed!'); // or redirect to confirmation page
+// });
+
+
+
+
 
 
 

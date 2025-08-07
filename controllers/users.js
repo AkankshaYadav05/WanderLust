@@ -1,4 +1,6 @@
 const User = require("../models/user");
+const Listing = require("../models/listing");
+
 
 module.exports.renderSignupForm = (req, res) => {
     res.render("users/signup.ejs", { showFooter: false });
@@ -49,4 +51,17 @@ module.exports.logout = (req, res, next) => {
 };
 
 
+module.exports.renderProfile = async (req, res) => {
+    try {
+        const user = req.user;
 
+        // Optional: fetch listings by this user
+        const userListings = await Listing.find({ owner: user._id });
+
+        res.render("users/profile", { user, userListings });
+    } catch (err) {
+        console.error("Error loading profile:", err);
+        req.flash("error", "Unable to load profile.");
+        res.redirect("/");
+    }
+};

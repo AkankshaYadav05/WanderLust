@@ -143,4 +143,11 @@ module.exports.index = async (req, res) => {
 };
 
 
+//Booking 
+module.exports.renderBookingForm = async (req, res) => {
+    let {id} = req.params;
+    const listing = await Listing.findById(id);
+    res.render("./listings/booking.ejs", { listing });
+};
+
 
