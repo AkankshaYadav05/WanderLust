@@ -8,72 +8,50 @@
     </script>
 
     <div class="row">
-        <div class="col-9 offset-1">
-        <br>
-        <h2><%= listing.title %> </h2>
-        </div>
-      <br><br>
-
-     <div class="card col-9 offset-1 show-card ">
-        <img src="<%= listing.image.url %>" 
-        class="card-img-top show-img" 
-        alt="listing-image"
-        />
-      </div>
-
-     <div class="show-card-body ">
-            <p class="card-text">
-                <i>Owned By:- <%= listing.owner.username %> </i>
-                <br>
-                ₹<%= listing.price.toLocaleString("en-IN") %> /night<br>
-                <%= listing.description.split('.').slice(0, 2).join('.') + '.' %> <br>
-                <%= listing.location %> <br>
-                <%= listing.country %>
-            </p>
-      </div>
-
-     <br>
-    </div>
-
-    
-
-  
-
-    
-
-    <% if(currUser && listing.owner._id.equals(currUser._id)) { %>
-    <div class="btns" >
-        <a href="/listings/<%= listing.id %>/edit" 
-        class="btn btn-dark col-1 offset-1 edit-btn"
-        >Edit</a>
-    
-        <br>
-
-        <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE">
-            <button class="btn btn-dark offset-3">Delete</button>
-        </form>
-    </div>
-    
-    <% } %>
-
-    <br>
-    <div class="price-booking col-3 offset-7">
-    <div class="price-display">₹2,100
-      <span class="per-night">/night</span>
-    </div>
-    <a href="/listings/<%= listing.id %>/booking" class="reserve-btn">
-      Reserve Now
-    </a>
+      <div class="container mt-4 offset-1 col-10">
+  <!-- Image -->
+  <div class="card show-card mb-4">
+    <img src="<%= listing.image.url %>" alt="listing-image" class="card-img-top show-img" />
   </div>
 
-    <div class="section about-section offset-1 col-9">
+  <!-- Flex Row: Left (Details) | Right (Price & Reserve) -->
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-4 px-1 px-md-3">
+    
+    <!-- LEFT: Listing Info + Rating Summary -->
+    <div class="listing-details-box flex-fill">
+      <p class="text-muted mb-1"><strong><em>Owned By:–</em></strong> <em><%= listing.owner.username %></em></p>
+      <p class="text-muted mb-1">Location: <%= listing.location %>, <%= listing.country %></p>
+
+      <!-- Star Rating Summary -->
+      <div class="rating-summary mt-3">
+        <span class="star">⭐</span>
+        <span class="rating-value"><%= listing.rating %></span>
+        <span class="review-count text-muted">(<%= listing.reviews.length %> reviews)</span>
+      </div>
+    </div>
+
+    <!-- RIGHT: Booking Card -->
+    <div class="price-booking">
+      <div class="price-display">
+        ₹<%= listing.price.toLocaleString("en-IN") %>
+        <span class="per-night">/night</span>
+      </div>
+      <a href="/listings/<%= listing.id %>/booking" class="reserve-btn">Reserve Now</a>
+    </div>
+    
+  </div>
+</div>
+
+
+
+    <div class="section about-section offset-1 col-10">
       <h3>About this place</h3>
       <p><%= listing.description %></p>
     </div>
 
 
     <!-- Add offers section below this -->
-   <div class="section offers-section offset-1 ms-6 mt-4">
+   <div class="section offers-section offset-1 ms-6 mt-4 col-10">
     <h3 class="mb-3">What this place offers</h3>
     
     <% if (listing.facilities && listing.facilities.length > 0) { %>
@@ -91,7 +69,7 @@
 
 
    <!-- Host Section -->
-<div class="container mt-5 offset-1 ms-6 col-9">
+<div class="container mt-5 offset-1 ms-6 col-10">
   <h4 class="mb-4"><b>Meet your host</b></h4>
 
   <!-- Host Card -->
@@ -127,9 +105,7 @@
 
 
  
-
-    
-    <div class="col-9 offset-1 ms-6 mb-3">
+<div class="col-10 offset-1 ms-6 mb-3">
   <% if (currUser) { %>
     <br>
     <div class="col-8">
@@ -209,7 +185,7 @@
   </div>
 </div>
 
-    <div class="col-9 offset-1 mb-3">
+    <div class="col-10 offset-1 mb-3">
         <h3>Where you'll be</h3>
         <div id="map"></div>
     </div>
